@@ -5,7 +5,7 @@ import Avatar from "avataaars";
 import { Piece } from "avataaars";
 import styles from "./page.module.css";
 
-const page = () => {
+export default function Page() {
 	const [optionSelected, setOptionSelected] = useState("skin");
 	const [skin, setSkin] = useState("Light");
 	const [hair, setHair] = useState("LongHairMiaWallace");
@@ -423,6 +423,4 @@ const page = () => {
 			</div> */}
 		</div>
 	);
-};
-
-export default page;
+}
