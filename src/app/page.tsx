@@ -203,7 +203,11 @@ export default function Page() {
 						<div className={styles.customizePreview}>
 							{skinTypes.map((type, index) => {
 								return (
-									<div className={styles.pieceSkin} onClick={() => setSkin(type)}>
+									<div
+										className={styles.pieceSkin}
+										onClick={() => setSkin(type)}
+										key={index}
+									>
 										<Piece
 											avatarStyle="Circle"
 											pieceType="skin"
@@ -246,7 +250,11 @@ export default function Page() {
 							<div className={styles.customizePreview}>
 								{topTypes.map((type, index) => {
 									return (
-										<div className={styles.piece} onClick={() => setHair(type)}>
+										<div
+											className={styles.piece}
+											onClick={() => setHair(type)}
+											key={index}
+										>
 											<Piece
 												avatarStyle="Circle"
 												pieceType="top"
@@ -267,6 +275,7 @@ export default function Page() {
 									<div
 										className={styles.piece}
 										onClick={() => setFacialHair(type)}
+										key={index}
 									>
 										<Piece
 											avatarStyle="Circle"
@@ -286,6 +295,7 @@ export default function Page() {
 									<div
 										className={styles.piece}
 										onClick={() => setAccessories(type)}
+										key={index}
 									>
 										<Piece
 											avatarStyle="Circle"
@@ -337,6 +347,7 @@ export default function Page() {
 										<div
 											className={styles.piece}
 											onClick={() => setClothes(type)}
+											key={index}
 										>
 											<Piece
 												avatarStyle="Circle"
@@ -355,7 +366,11 @@ export default function Page() {
 						<div className={styles.customizePreview}>
 							{eyesTypes.map((type, index) => {
 								return (
-									<div className={styles.pieceEyes} onClick={() => setEyes(type)}>
+									<div
+										className={styles.pieceEyes}
+										onClick={() => setEyes(type)}
+										key={index}
+									>
 										<Piece
 											avatarStyle="Circle"
 											pieceType="eyes"
@@ -374,6 +389,7 @@ export default function Page() {
 									<div
 										className={styles.pieceEyes}
 										onClick={() => setEyebrow(type)}
+										key={index}
 									>
 										<Piece
 											avatarStyle="Circle"
@@ -393,6 +409,7 @@ export default function Page() {
 									<div
 										className={styles.pieceEyes}
 										onClick={() => setMouth(type)}
+										key={index}
 									>
 										<Piece
 											avatarStyle="Circle"
