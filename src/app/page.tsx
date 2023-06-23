@@ -1,11 +1,16 @@
 "use client";
 
-import React, { useState, ReactElement, useEffect } from "react";
+import React, { useState, ReactElement, useEffect, useRef } from "react";
+import * as ReactDOM from "react-dom";
 import Avatar from "avataaars";
 import { Piece } from "avataaars";
+import * as FileSaver from "file-saver";
 import styles from "./page.module.css";
 
 export default function Page() {
+	let avatarRef: Avatar | null = null;
+	let canvasRef: HTMLCanvasElement | null = null;
+
 	const [optionSelected, setOptionSelected] = useState("skin");
 	const [skin, setSkin] = useState("Light");
 	const [hair, setHair] = useState("LongHairMiaWallace");
@@ -168,9 +173,52 @@ export default function Page() {
 		setMouth(mouthTypes[randomNumber(0, mouthTypes.length - 1)]);
 	};
 
-	// const download = () => {
-	// 	console.log("download");
-	// };
+	const triggerDownload = (imageBlob: Blob, fileName: string) => {
+		console.log("saving img...");
+		FileSaver.saveAs(imageBlob, fileName);
+	};
+
+	const download = () => {
+		console.log("download");
+		console.log(avatarRef);
+
+		const svgNode = ReactDOM.findDOMNode(avatarRef!)! as Element;
+		const canvas = canvasRef!;
+		const ctx = canvas.getContext("2d")!;
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+		const anyWindow = window as any;
+		const DOMURL = anyWindow.URL || anyWindow.webkitURL || window;
+
+		const data = svgNode.outerHTML;
+		const img = new Image();
+		const svg = new Blob([data], { type: "image/svg+xml" });
+		const url = DOMURL.createObjectURL(svg);
+		console.log(svgNode);
+		console.log(ctx);
+		console.log(url);
+
+		img.onload = () => {
+			ctx.save();
+			ctx.scale(2, 2);
+			ctx.drawImage(img, 0, 0);
+			ctx.restore();
+			DOMURL.revokeObjectURL(url);
+			canvasRef!.toBlob((imageBlob) => {
+				console.log("imgBlob", imageBlob);
+				triggerDownload(imageBlob!, "avataaars.png");
+			});
+		};
+		img.src = url;
+	};
+
+	const createAvatarRef = (ref: Avatar) => {
+		avatarRef = ref;
+	};
+
+	const createCanvasRef = (ref: HTMLCanvasElement) => {
+		canvasRef = ref;
+	};
 
 	return (
 		<div className={styles.main}>
@@ -178,6 +226,7 @@ export default function Page() {
 				<div className={styles.avatarContainer}>
 					<Avatar
 						// style={{ width: "100px", height: "100px" }}
+						ref={createAvatarRef}
 						avatarStyle="Circle"
 						topType={hair}
 						accessoriesType={accessories}
@@ -424,7 +473,7 @@ export default function Page() {
 					)}
 				</div>
 			</div>
-			{/* <div style={{ textAlign: "center", marginTop: "40px" }}>
+			<div style={{ textAlign: "center", marginTop: "40px" }}>
 				<button
 					style={{
 						padding: "10px 30px",
@@ -437,7 +486,8 @@ export default function Page() {
 				>
 					Download
 				</button>
-			</div> */}
+			</div>
+			<canvas style={{ display: "none" }} width="528" height="560" ref={createCanvasRef} />
 		</div>
 	);
 }
